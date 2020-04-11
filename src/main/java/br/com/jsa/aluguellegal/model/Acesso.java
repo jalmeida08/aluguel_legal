@@ -12,30 +12,43 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Version;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Acesso  implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id_acesso")
-	private Integer idAcesso;
+	@Column(name="id")
+	private Integer id;
 	
 	private String papel;
 	
-	@ManyToMany(mappedBy="usuario")
-	private List<Usuario> usuario = new ArrayList<Usuario>();
+	@ManyToMany(mappedBy="acesso")
+	private List<Usuario> usuario = new ArrayList<>();
 
 	@Version
+	@Column(name="versao")
 	private Integer versao;
 
-	public Integer getIdAcesso() {
-		return idAcesso;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setIdAcesso(Integer idAcesso) {
-		this.idAcesso = idAcesso;
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public List<Usuario> getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(List<Usuario> usuario) {
+		this.usuario = usuario;
 	}
 
 	public String getPapel() {

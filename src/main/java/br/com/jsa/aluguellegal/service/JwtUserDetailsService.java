@@ -13,12 +13,16 @@ public class JwtUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		System.out.println(username);
+		
+		
 		if ("springuser".equals(username)) {
-			return new User("springuser", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6",
+			return new User("springuser", "$2a$10$z8IG6lrBxmVDDo/560sTHOHSkUvI3ppuCbeqQ29FjkhldsRUjEvIW",
 					new ArrayList<>());
 		} else {
+			System.out.println("SENHA INCORRETA");
 			throw new UsernameNotFoundException("User not found with username: " + username);
 		}
 	}
+	
+	
 }

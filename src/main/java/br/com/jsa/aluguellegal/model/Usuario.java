@@ -15,14 +15,18 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Version;
 
-@Entity
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+@Entity(name = "usuario")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1204940256599145475L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id_usuario")
-	private Integer idUsuario;
+	@Column(name="id")
+	private Integer id;
 	
 	private String usuario;
 	private String email;
@@ -30,18 +34,19 @@ public class Usuario implements Serializable {
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "usuario_acesso")
-	@JoinColumn(name="id_acesso", referencedColumnName="id_acesso")
-	private List<Acesso> acesso = new ArrayList<Acesso>();
+	@JoinColumn(name="acesso_id")
+	private List<Acesso> acesso = new ArrayList<>();
 	
 	@Version
-	private Integer version;
+	@Column(name="versao")
+	private Integer versao;
 
-	public Integer getIdUsuario() {
-		return idUsuario;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setIdUsuario(Integer idUsuario) {
-		this.idUsuario = idUsuario;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getUsuario() {
@@ -65,7 +70,7 @@ public class Usuario implements Serializable {
 	}
 
 	public void setSenha(String senha) {
-		this.senha = senha;
+		this.senha =  senha;
 	}
 
 	public List<Acesso> getAcesso() {
@@ -76,12 +81,12 @@ public class Usuario implements Serializable {
 		this.acesso = acesso;
 	}
 
-	public Integer getVersion() {
-		return version;
+	public Integer getVersao() {
+		return versao;
 	}
 
-	public void setVersion(Integer version) {
-		this.version = version;
+	public void setVersao(Integer versao) {
+		this.versao = versao;
 	}
 	
 }
