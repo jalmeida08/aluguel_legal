@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -31,6 +32,9 @@ public class Usuario implements Serializable {
 	private String usuario;
 	private String email;
 	private String senha;
+	
+	@Transient
+	private String token;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "usuario_acesso")
@@ -79,6 +83,14 @@ public class Usuario implements Serializable {
 
 	public void setAcesso(List<Acesso> acesso) {
 		this.acesso = acesso;
+	}
+	
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	public Integer getVersao() {

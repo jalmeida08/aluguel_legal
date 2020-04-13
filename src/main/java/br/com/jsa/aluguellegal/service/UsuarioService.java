@@ -20,16 +20,19 @@ public class UsuarioService {
 	
 	public UserDetails login(Usuario usuario) {
 		Usuario findByUsuario = usuarioRepository.findByUsuario(usuario.getUsuario());
-		if(usuario.getUsuario().equals(findByUsuario.getUsuario())) {
-			if(BCrypt.checkpw(usuario.getSenha(), findByUsuario.getSenha())) {
+		if(findByUsuario != null) {
+			if(usuario.getUsuario().equals(findByUsuario.getUsuario()) && BCrypt.checkpw(usuario.getSenha(), findByUsuario.getSenha())) {
 				return new User(findByUsuario.getUsuario(), findByUsuario.getSenha(), new ArrayList<>());
 			} else {
 				throw new RuntimeException("Senha inválida.");
 			}
 		} else {
-			System.out.println("SENHA INCORRETA");
-			throw new UsernameNotFoundException("User not found with username: " + usuario.getUsuario());
+			throw new UsernameNotFoundException("Usuário inválido");
 		}
+	}
+
+	public Usuario buscarDadosUsuario(String usuario) {
+		return usuarioRepository.findByUsuario(usuario);
 	}
 
 }

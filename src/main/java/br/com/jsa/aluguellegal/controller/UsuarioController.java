@@ -5,10 +5,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.util.SystemPropertyUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,9 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.jsa.aluguellegal.config.JwtTokenUtil;
-import br.com.jsa.aluguellegal.model.JwtResponse;
 import br.com.jsa.aluguellegal.model.Usuario;
-import br.com.jsa.aluguellegal.service.JwtUserDetailsService;
 import br.com.jsa.aluguellegal.service.UsuarioService;
 
 @RestController
@@ -28,9 +25,6 @@ import br.com.jsa.aluguellegal.service.UsuarioService;
 @Produces(MediaType.APPLICATION_JSON)
 public class UsuarioController {
 
-//	@Autowired
-//	private AuthenticationManager authenticationManager;
-
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 	
@@ -38,13 +32,18 @@ public class UsuarioController {
 	private UsuarioService usuarioService;
 
 	@PostMapping("/login")
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody Usuario usuario) throws Exception {
-		
-		final UserDetails userDetails = usuarioService.login(usuario);
-		
-		final String token = jwtTokenUtil.generateToken(userDetails);
-		
-		return ResponseEntity.ok(new JwtResponse(token));
+	public ResponseEntity<?> createAuthenticationToken(@RequestBody Usuario usuario) {
+		try {
+			Usuario user = new Usuario();
+
+			final UserDetails userDetails = usuarioService.login(usuario);			
+			user = usuarioService.buscarDadosUsuario(usuario.getUsuario());
+			user.setToken(jwtTokenUtil.generateToken(userDetails));
+			
+			return ResponseEntity.ok(user);
+		}catch (RuntimeException e) {
+			 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e.getMessage());
+		}
 	}
 	
 }
