@@ -15,7 +15,7 @@ import javax.persistence.Version;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-@Entity
+@Entity(name = "acesso")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Acesso  implements Serializable {
 

@@ -15,14 +15,14 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import br.com.jsa.aluguellegal.service.JwtUserDetailsService;
+import br.com.jsa.aluguellegal.service.UsuarioService;
 import io.jsonwebtoken.ExpiredJwtException;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
 	@Autowired
-	private JwtUserDetailsService jwtUserDetailsService;
+	private UsuarioService usuarioService;
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
@@ -31,6 +31,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
 		final String requestTokenHeader = request.getHeader("Authorization");
+		System.out.println("Request URI: "+ request.getRequestURI());
+		System.out.println("content type: "+request.getHeader("Content-type"));
+		System.out.println("Authorization: "+request.getHeader("Authorization"));
 
 		String username = null;
 		String jwtToken = null;
@@ -52,7 +55,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
 		// Tendo o token, valide o.
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
+			
+			UserDetails userDetails = this.usuarioService.dadosAutenticacaoAutorizacao(username);
 
 			if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
