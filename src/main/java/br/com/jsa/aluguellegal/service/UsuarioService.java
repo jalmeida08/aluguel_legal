@@ -19,7 +19,7 @@ import br.com.jsa.aluguellegal.repository.ProprietarioRepository;
 import br.com.jsa.aluguellegal.repository.UsuarioRepository;
 
 @Service
-public class UsuarioService implements UserDetailsService{
+public class UsuarioService implements UserDetailsService {
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;

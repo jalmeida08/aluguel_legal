@@ -25,9 +25,10 @@ public class Contato implements Serializable{
 	private Integer id;
 	@ManyToOne
 	private Pessoa pessoa;
-	private Integer num_telefone;
+	@Column(name = "num_telefone")
+	private Long numTelefone;
 	@Column(name="tipo_telefone")
-	private TipoTelefone tipoTelefone;
+	private String tipoTelefone;
 	@Column(name="whats_app")
 	private boolean whatsApp;
 	@Version
@@ -46,16 +47,16 @@ public class Contato implements Serializable{
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
 	}
-	public Integer getNum_telefone() {
-		return num_telefone;
+	public Long getNumTelefone() {
+		return numTelefone;
 	}
-	public void setNum_telefone(Integer num_telefone) {
-		this.num_telefone = num_telefone;
+	public void setNumTelefone(Long numTelefone) {
+		this.numTelefone = numTelefone;
 	}
-	public TipoTelefone getTipoTelefone() {
+	public String getTipoTelefone() {
 		return tipoTelefone;
 	}
-	public void setTipoTelefone(TipoTelefone tipoTelefone) {
+	public void setTipoTelefone(String tipoTelefone) {
 		this.tipoTelefone = tipoTelefone;
 	}
 	public boolean isWhatsApp() {

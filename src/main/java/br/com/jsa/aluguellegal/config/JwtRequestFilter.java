@@ -31,10 +31,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
 		final String requestTokenHeader = request.getHeader("Authorization");
-		System.out.println("Request URI: "+ request.getRequestURI());
-		System.out.println("content type: "+request.getHeader("Content-type"));
+        System.out.println("===========================  I N Í C I O  ===========================");
+		System.out.println("Request URI  : "+ request.getRequestURI());
+		System.out.println("Method       : "+ request.getMethod());
+		System.out.println("content type : "+request.getHeader("Content-type"));
 		System.out.println("Authorization: "+request.getHeader("Authorization"));
-
+        System.out.println("=============================   F I M   =============================");
 		String username = null;
 		String jwtToken = null;
 		
@@ -55,7 +57,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
 		// Tendo o token, valide o.
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			
+
 			UserDetails userDetails = this.usuarioService.dadosAutenticacaoAutorizacao(username);
 
 			if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
