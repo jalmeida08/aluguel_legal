@@ -4,15 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Version;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -30,6 +22,8 @@ public class Imovel implements Serializable {
 	@JoinTable(name = "pessoa_imovel")
 	@JoinColumn(name="pessoa_id")
 	private List<Pessoa> pessoa = new ArrayList<Pessoa>();
+	@OneToOne(mappedBy = "imovel")
+	private Contrato contrato;
 	private Integer cep;
 	private String endereco;
 	private Integer numero;
@@ -102,7 +96,7 @@ public class Imovel implements Serializable {
 	public List<Despesa> getDespesa() {
 		return despesa;
 	}
-	public void setDespesas(List<Despesa> despesa) {
+	public void setDespesa(List<Despesa> despesa) {
 		this.despesa = despesa;
 	}
 	public StatusImovel getStatusImovel() {
@@ -117,5 +111,13 @@ public class Imovel implements Serializable {
 	public void setVersao(Integer versao) {
 		this.versao = versao;
 	}
-	
+
+	public Contrato getContrato() {
+		return contrato;
+	}
+
+	public void setContrato(Contrato contrato) {
+		this.contrato = contrato;
+	}
+
 }

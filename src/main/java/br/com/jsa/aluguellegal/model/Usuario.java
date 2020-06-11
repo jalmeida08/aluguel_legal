@@ -32,6 +32,7 @@ public class Usuario implements Serializable {
 	private String usuario;
 	private String email;
 	@OneToOne
+	@JoinColumn(name = "pessoa_id")
 	private Pessoa pessoa;
 	private String senha;
 	@Transient

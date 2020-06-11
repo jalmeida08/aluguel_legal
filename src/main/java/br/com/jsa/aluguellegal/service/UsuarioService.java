@@ -11,8 +11,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.annotation.JsonAppend.Prop;
-
 import br.com.jsa.aluguellegal.model.Proprietario;
 import br.com.jsa.aluguellegal.model.Usuario;
 import br.com.jsa.aluguellegal.repository.ProprietarioRepository;

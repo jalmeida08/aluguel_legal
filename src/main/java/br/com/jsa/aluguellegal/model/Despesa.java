@@ -5,16 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Version;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -30,19 +21,19 @@ public class Despesa implements Serializable {
 	private Integer id;
 	private String nome;
 	private Double valor;
+	@OneToOne(mappedBy = "despesa")
+	private Contrato contrato;
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "imovel_despesa")
 	@JoinColumn(name="imovel_id")
 	private List<Imovel> imovel = new ArrayList<Imovel>();
-	@Column(name="data_referencia")
-	private Date dataReferencia;
+	@Column(name="ano_mes_referencia")
+	private Integer anoMesReferencia;
 	@Column(name="data_vencimento")
 	private Date dataVencimento; 
 	@Column(name="data_pagamento")
 	private Date dataPagamento;
 	private String descricao;
-	@Column(name="status_pagamento")
-	private StatusPagamento statusPagamento;
 	@Version
 	@Column(name="versao")
 	private Integer versao;
@@ -71,11 +62,11 @@ public class Despesa implements Serializable {
 	public void setImovel(List<Imovel> imovel) {
 		this.imovel = imovel;
 	}
-	public Date getDataReferencia() {
-		return dataReferencia;
+	public Integer getAnoMesReferencia() {
+		return anoMesReferencia;
 	}
-	public void setDataReferencia(Date dataReferencia) {
-		this.dataReferencia = dataReferencia;
+	public void setAnoMesReferencia(Integer anoMesReferencia) {
+		this.anoMesReferencia = anoMesReferencia;
 	}
 	public Date getDataVencimento() {
 		return dataVencimento;
@@ -94,12 +85,6 @@ public class Despesa implements Serializable {
 	}
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-	public StatusPagamento getStatusPagamento() {
-		return statusPagamento;
-	}
-	public void setStatusPagamento(StatusPagamento statusPagamento) {
-		this.statusPagamento = statusPagamento;
 	}
 	public Integer getVersao() {
 		return versao;

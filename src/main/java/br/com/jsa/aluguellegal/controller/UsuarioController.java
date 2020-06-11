@@ -36,7 +36,7 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioService usuarioService;
 
-	@PostMapping("/login")
+	@PostMapping(value = "/login", consumes={"application/json"})
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody Usuario usuario) {
 		try {
 			Usuario user = new Usuario();
@@ -52,7 +52,7 @@ public class UsuarioController {
 		}
 	}
 	
-	@PostMapping("/salvar")
+	@PostMapping(value = "/salvar", consumes={"application/json"})
 	public ResponseEntity<?> cadastrarUsuario(@RequestBody Usuario usuario) {
 		usuarioService.cadastrarUsuario(usuario);
 		return ResponseEntity.ok().build();

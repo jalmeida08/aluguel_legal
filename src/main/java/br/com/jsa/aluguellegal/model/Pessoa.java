@@ -31,11 +31,11 @@ public class Pessoa implements Serializable{
 	private Integer id;
 	private String nome;
 	private Long numCpf;
-
+	@OneToOne(mappedBy = "pessoa")
+	private Contrato contrato;
 	@OneToOne(mappedBy="pessoa", fetch = FetchType.LAZY)
 	@JsonIgnore
 	private Usuario usuario;
-
 	@OneToMany(mappedBy = "pessoa", fetch = FetchType.LAZY)
 	private List<Contato> contato = new ArrayList<Contato>();
 	@ManyToMany(mappedBy = "pessoa", fetch = FetchType.LAZY)
@@ -88,5 +88,11 @@ public class Pessoa implements Serializable{
 		this.versao = versao;
 	}
 
-	
+	public Contrato getContrato() {
+		return contrato;
+	}
+
+	public void setContrato(Contrato contrato) {
+		this.contrato = contrato;
+	}
 }
