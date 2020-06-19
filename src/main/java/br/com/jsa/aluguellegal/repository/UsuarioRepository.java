@@ -9,5 +9,6 @@ import br.com.jsa.aluguellegal.model.Usuario;
 public interface UsuarioRepository extends CrudRepository<Usuario, Integer>{
 	
 	public Usuario findByUsuario(String usuario);
-	
+
+	public Usuario findByChaveAtivacao(String chaveUsuario);
 }

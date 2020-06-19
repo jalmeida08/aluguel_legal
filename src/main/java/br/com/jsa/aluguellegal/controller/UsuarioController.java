@@ -6,6 +6,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import br.com.jsa.aluguellegal.service.MensageriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,9 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioService usuarioService;
 
+	@Autowired
+	private MensageriaService mensageriaService;
+
 	@PostMapping(value = "/login", consumes={"application/json"})
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody Usuario usuario) {
 		try {
@@ -52,12 +56,27 @@ public class UsuarioController {
 		}
 	}
 	
-	@PostMapping(value = "/salvar", consumes={"application/json"})
-	public ResponseEntity<?> cadastrarUsuario(@RequestBody Usuario usuario) {
-		usuarioService.cadastrarUsuario(usuario);
+	@PostMapping(value = "/salvar-user-proprietario")
+	public ResponseEntity<?> cadastrarUsuarioProprietario(@RequestBody Usuario usuario) {
+		Usuario usuarioSalvo = usuarioService.cadastrarUsuarioProprietario(usuario);
+
+		mensageriaService.enviarEmailNovoUsuario(usuarioSalvo.getEmail(),
+				usuario.getPessoa().getNome(),
+				usuario.getChaveAtivacao());
+
 		return ResponseEntity.ok().build();
 	}
-	
+
+    @PostMapping(value = "/salvar-user-locatario")
+    public ResponseEntity<?> cadastrarUsuarioLocatario(@RequestBody Usuario usuario) {
+        Usuario usuarioSalvo = usuarioService.cadastrarUsuarioLocatario(usuario);
+
+        mensageriaService.enviarEmailNovoUsuario(usuarioSalvo.getEmail(),
+                usuario.getPessoa().getNome(),
+                usuario.getChaveAtivacao());
+
+        return ResponseEntity.ok().build();
+    }
 	@DeleteMapping("/remover")
 	public ResponseEntity<?> deletarUsuario(Integer id) {
 		usuarioService.deletarUsuario(id);
@@ -75,6 +94,12 @@ public class UsuarioController {
 		Optional<Usuario> usuario = usuarioService.buscarUsuarioId(id);
 		if(usuario.isPresent())
 			usuario.get().setSenha("");
+		return ResponseEntity.ok(usuario);
+	}
+
+	@GetMapping("/ativar-chave-usuario/{chaveUsuario}")
+	public ResponseEntity<?> ativarUsuarioChave(@PathVariable("chaveUsuario") String chaveUsuario){
+		Usuario usuario = usuarioService.ativarUsuarioChave(chaveUsuario);
 		return ResponseEntity.ok(usuario);
 	}
 	

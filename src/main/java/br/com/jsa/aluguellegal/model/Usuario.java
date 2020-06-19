@@ -41,6 +41,9 @@ public class Usuario implements Serializable {
 	@JoinTable(name = "usuario_acesso")
 	@JoinColumn(name="acesso_id")
 	private List<Acesso> acesso = new ArrayList<>();
+	private boolean ativo;
+	@Column(name = "chave_ativacao")
+	private String chaveAtivacao;
 	@Version
 	@Column(name="versao")
 	private Integer versao;
@@ -93,7 +96,20 @@ public class Usuario implements Serializable {
 	public void setVersao(Integer versao) {
 		this.versao = versao;
 	}
-	
-	
 
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
+
+	public String getChaveAtivacao() {
+		return chaveAtivacao;
+	}
+
+	public void setChaveAtivacao(String chaveAtivacao) {
+		this.chaveAtivacao = chaveAtivacao;
+	}
 }

@@ -54,8 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 				.mvcMatchers(HttpMethod.OPTIONS, "/**")
 				.permitAll()
-				.antMatchers("/usuario/login", "/usuario/salvar", "/v2/api-docs", "/configuration/ui",
-				"/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**")
+				.antMatchers("/usuario/login", "/usuario/salvar", "/usuario/ativar-chave-usuario/**", "/webjars/**")
 				.permitAll().
 				// Qualquer outra requisição deve ser checada
 						anyRequest().authenticated().and().exceptionHandling()

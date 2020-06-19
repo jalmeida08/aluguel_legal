@@ -6,9 +6,9 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,6 +31,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
+		HttpServletRequest httpRequest = (HttpServletRequest) request;
+		HttpServletResponse httpResponse = (HttpServletResponse) response;
+
 		final String requestTokenHeader = request.getHeader("Authorization");
         System.out.println("===========================  I N Í C I O  ===========================");
 		System.out.println("Request URI  : "+ request.getRequestURI());
@@ -43,12 +46,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		
 		// JWT Token está no form "Bearer token". Remova a palavra Bearer e pegue
 		// somente o Token
-		if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-			jwtToken = requestTokenHeader.substring(7);
+		if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer")) {
+			jwtToken = requestTokenHeader.substring(6).trim();
 			try {
 				username = jwtTokenUtil.getUsernameFromToken(jwtToken);
 			} catch (IllegalArgumentException e) {
 				System.out.println("Unable to get JWT Token");
+				httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			} catch (ExpiredJwtException e) {
 				System.out.println("JWT Token has expired");
 			}
@@ -70,6 +74,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 			}
 		}
+		System.out.println("STATUS CODE: "+response.getStatus());
 		chain.doFilter(request, response);
 	}
 

@@ -23,9 +23,9 @@ public class LocatarioController {
     private LocatarioService locatarioService;
 
     @PostMapping("/salvar")
-    public ResponseEntity<?> salvar(@RequestBody  Locatario locatario){
+    public ResponseEntity<Locatario> salvar(@RequestBody  Locatario locatario){
         locatarioService.salvar(locatario);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(locatario);
     }
 
     @GetMapping("/{id}")

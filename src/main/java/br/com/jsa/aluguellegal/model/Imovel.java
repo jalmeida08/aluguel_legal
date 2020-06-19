@@ -34,7 +34,7 @@ public class Imovel implements Serializable {
 	@ManyToMany(mappedBy="imovel")
 	private List<Despesa> despesa = new ArrayList<Despesa>();
 	@Column(name="status_imovel")
-	private StatusImovel statusImovel;
+	private String statusImovel;
 	@Version
 	@Column(name="versao")
 	private Integer versao;
@@ -99,10 +99,10 @@ public class Imovel implements Serializable {
 	public void setDespesa(List<Despesa> despesa) {
 		this.despesa = despesa;
 	}
-	public StatusImovel getStatusImovel() {
+	public String getStatusImovel() {
 		return statusImovel;
 	}
-	public void setStatusImovel(StatusImovel statusImovel) {
+	public void setStatusImovel(String statusImovel) {
 		this.statusImovel = statusImovel;
 	}
 	public Integer getVersao() {
