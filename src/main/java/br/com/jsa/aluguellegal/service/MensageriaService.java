@@ -31,7 +31,7 @@ public class MensageriaService {
 
 	public void enviarEmailNovoUsuario(String destinatario, String nome, String chaveAtivacao){
 		final String tituloEmail = "Bem Vindo ao Aluguel Legal";
-		String linkParaAtivarUsuario = "http://localhost:4200/administracao/usuario/confirm/";
+		String linkParaAtivarUsuario = "http://localhost:4200/administracao/usuario/confirm/p";
 		linkParaAtivarUsuario += chaveAtivacao;
 		String textoEmail = "<html> <head>"
 		+ "<style>"
@@ -46,6 +46,26 @@ public class MensageriaService {
 		+ "<br><br><br><br><br><br><br><br>"
 		+ "Caso o botão não funcione, clique no link: <a href="+ linkParaAtivarUsuario +">" + linkParaAtivarUsuario + "</a>"
 		+ "</body></html>";
+		enviarEmail(destinatario, tituloEmail, textoEmail);
+	}
+
+	public void enviarEmailNovoProprietario(String destinatario, String nome, String chaveAtivacao){
+		final String tituloEmail = "Bem Vindo ao Aluguel Legal";
+		String linkParaAtivarUsuario = "http://localhost:4200/administracao/usuario/confirm/l";
+		linkParaAtivarUsuario += chaveAtivacao;
+		String textoEmail = "<html> <head>"
+				+ "<style>"
+				+ ".botao:hover {background-color: rgba(135,206,250,0.5)}"
+				+ ".botao {background-color: #87CEFA; padding: 10px; color: #000; border-radius: 3px; text-decoration: none}"
+				+ "</style>"
+				+ "</head> <body>"
+				+ "<h1>"+ nome +", seja muito bem vindo(a). </h1>"
+				+ "<br>"
+				+ "<p>Clique no botão para ativar o seu usuário: "
+				+ "<a class='botao' href='"+linkParaAtivarUsuario+"'>Ativar Usuário</a></p>"
+				+ "<br><br><br><br><br><br><br><br>"
+				+ "Caso o botão não funcione, clique no link: <a href="+ linkParaAtivarUsuario +">" + linkParaAtivarUsuario + "</a>"
+				+ "</body></html>";
 		enviarEmail(destinatario, tituloEmail, textoEmail);
 	}
 }
