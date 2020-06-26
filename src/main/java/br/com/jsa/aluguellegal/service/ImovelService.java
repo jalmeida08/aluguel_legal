@@ -24,14 +24,17 @@ public class ImovelService {
     @Autowired
     private PessoaRepository pessoaRepository;
 
-    public void salvar(List<Imovel> listaImovel){
-        listaImovel.stream().forEach(a -> this.salvarImovel(a));
+    public void salvar(Imovel imovel){
+        if(imovel.getPessoa().isEmpty())
+            System.out.println("ERRO");
+        imovel.getPessoa().stream().forEach( p -> p = buscarPessoa(p.getId()));
+        imovelRepository.save(imovel);
     }
 
     private void salvarImovel(Imovel imovel){
-        if(!imovel.getPessoa().isEmpty()){
+        if(!imovel.getPessoa().isEmpty())
             imovel.getPessoa().stream().forEach(p -> p = buscarPessoa(p.getId()));
-        }
+
 
         Imovel imovelSalvo = imovelRepository.save(imovel);
 
@@ -69,5 +72,9 @@ public class ImovelService {
 
     public void removerImovel(Integer id){
         imovelRepository.deleteById(id);
+    }
+
+    public void salvarListaImoveis(List<Imovel> listaImovel) {
+        listaImovel.stream().forEach(i -> salvar(i));
     }
 }

@@ -24,7 +24,7 @@ public class ImovelController {
 
     @PostMapping("/salvar-lista-imovel")
     public ResponseEntity salvar(@RequestBody List<Imovel> listaImovel){
-        imovelService.salvar(listaImovel);
+        imovelService.salvarListaImoveis(listaImovel);
         return ResponseEntity.ok().build();
     }
 

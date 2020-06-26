@@ -2,6 +2,7 @@ package br.com.jsa.aluguellegal.service;
 
 import br.com.jsa.aluguellegal.Util;
 import br.com.jsa.aluguellegal.exceptions.CpfJaCadastradoException;
+import br.com.jsa.aluguellegal.exceptions.EmailJaCadastradoException;
 import br.com.jsa.aluguellegal.model.Pessoa;
 import br.com.jsa.aluguellegal.model.Proprietario;
 import br.com.jsa.aluguellegal.model.Usuario;
@@ -27,14 +28,16 @@ public class ProprietarioService {
 
 	public void salvar(Proprietario proprietario) { proprietarioRepository.save(proprietario); }
 
-	public Proprietario queroParticiparAloguelLegalSalvar(Proprietario proprietario) throws CpfJaCadastradoException {
-		Optional<Pessoa> pessoa = pessoaRepository.findNumCpf(proprietario.getNumCpf());
-
+	public Proprietario queroParticiparAloguelLegalSalvar(Proprietario proprietario) throws CpfJaCadastradoException, EmailJaCadastradoException {
+		Optional<Pessoa> pessoa = pessoaRepository.findByNumCpf(proprietario.getNumCpf());
 		if(pessoa.isPresent()) throw new CpfJaCadastradoException();
+
+		Optional<Usuario> usuario = usuarioRepository.findByEmail(proprietario.getUsuario().getEmail());
+		if(usuario.isPresent()) throw new EmailJaCadastradoException();
 
 		Usuario u = proprietario.getUsuario();
 		proprietario.setUsuario(null);
-		Proprietario p = this.pessoaRepository.save(proprietario);
+		Proprietario p = proprietarioRepository.save(proprietario);
 		u.setPessoa(p);
 		p.setUsuario(salvarUsuarioEProcessarEnvioDeEmail(u));
 		return p;

@@ -7,10 +7,15 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 @Entity(name = "imovel")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
+@JsonIdentityInfo(scope = Imovel.class, generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
+@JsonDeserialize(builder = BeanBuilder.class)
 public class Imovel implements Serializable {
 
 	private static final long serialVersionUID = 845961843393627309L;
@@ -111,11 +116,9 @@ public class Imovel implements Serializable {
 	public void setVersao(Integer versao) {
 		this.versao = versao;
 	}
-
 	public Contrato getContrato() {
 		return contrato;
 	}
-
 	public void setContrato(Contrato contrato) {
 		this.contrato = contrato;
 	}

@@ -16,11 +16,16 @@ import javax.persistence.OneToOne;
 import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 @Entity(name = "pessoa")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
+@JsonIdentityInfo(scope = Pessoa.class, generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
+@JsonDeserialize(builder = BeanBuilder.class)
 public class Pessoa implements Serializable{
 
 	private static final long serialVersionUID = -7267937286295026785L;
@@ -34,7 +39,7 @@ public class Pessoa implements Serializable{
 	@OneToOne(mappedBy = "pessoa")
 	private Contrato contrato;
 	@OneToOne(mappedBy="pessoa", fetch = FetchType.LAZY)
-	@JsonIgnore
+	//@JsonIgnore
 	private Usuario usuario;
 	@OneToMany(mappedBy = "pessoa", fetch = FetchType.LAZY)
 	private List<Contato> contato = new ArrayList<Contato>();

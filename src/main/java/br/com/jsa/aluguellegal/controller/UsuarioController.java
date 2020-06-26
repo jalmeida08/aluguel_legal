@@ -6,6 +6,9 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import br.com.jsa.aluguellegal.exceptions.ChaveAtivacaoUsuarioNaoLocalizadoException;
+import br.com.jsa.aluguellegal.exceptions.UsuarioJaCadastradoException;
+import br.com.jsa.aluguellegal.exceptions.UsuarioNaoLocalizadoException;
 import br.com.jsa.aluguellegal.service.MensageriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,7 +43,7 @@ public class UsuarioController {
 	@Autowired
 	private MensageriaService mensageriaService;
 
-	@PostMapping(value = "/login", consumes={"application/json"})
+	@PostMapping("/login")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody Usuario usuario) {
 		try {
 			Usuario user = new Usuario();
@@ -99,8 +102,40 @@ public class UsuarioController {
 
 	@GetMapping("/ativar-chave-usuario/{chaveUsuario}")
 	public ResponseEntity<?> ativarUsuarioChave(@PathVariable("chaveUsuario") String chaveUsuario){
-		Usuario usuario = usuarioService.ativarUsuarioChave(chaveUsuario);
-		return ResponseEntity.ok(usuario);
+
+		try {
+			Usuario usuario = usuarioService.ativarUsuarioChave(chaveUsuario);
+			return ResponseEntity.ok(usuario);
+		} catch (ChaveAtivacaoUsuarioNaoLocalizadoException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+
+	}
+
+	@GetMapping("/buscar-informacoes-por-chave-ativacao/{chaveAtivacao}")
+    public ResponseEntity<?> buscarInformacoesPorChaveAtivacao(@PathVariable("chaveAtivacao") String chaveAtivacao){
+
+		try {
+			Usuario u = usuarioService.buscarInformacoesPorChaveAtivacao(chaveAtivacao);
+			return ResponseEntity.ok(u);
+		} catch (ChaveAtivacaoUsuarioNaoLocalizadoException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+    }
+
+    @PostMapping("/finalizar-cadastro-usuario")
+	public ResponseEntity<?> finalizarCadastroUsuario(@RequestBody Usuario usuario){
+		try {
+			Usuario u = usuarioService.finalizarCadastroUsuario(usuario);
+			mensageriaService.enviarEmailCadastroProprietario(u.getEmail(),
+					u.getPessoa().getNome(),
+					u.getChaveAtivacao(),
+					u.getUsuario());
+			return ResponseEntity.ok(u);
+		} catch (UsuarioNaoLocalizadoException | UsuarioJaCadastradoException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+
 	}
 	
 }

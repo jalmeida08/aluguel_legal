@@ -68,4 +68,22 @@ public class MensageriaService {
 				+ "</body></html>";
 		enviarEmail(destinatario, tituloEmail, textoEmail);
 	}
+
+	public void enviarEmailCadastroProprietario(String destinatario, String nome, String chaveAtivacao, String usuario){
+		final String tituloEmail = "Cadastro efetuado com sucesso";
+		String linkLogin = "http://localhost:4200/";
+		String textoEmail = "<html> <head>"
+				+ "<style>"
+				+ ".botao:hover {background-color: rgba(135,206,250,0.5)}"
+				+ ".botao {background-color: #87CEFA; padding: 10px; color: #000; border-radius: 3px; text-decoration: none}"
+				+ "</style>"
+				+ "</head> <body>"
+				+ "<h3>Olá "+ nome +", O seu cadastro foi efetuado e já se encontra ativo.</h3>"
+				+ "<br>"
+				+ "<p>Utilize o seu usuário cadastrado para efetuar os próximos acessos ao sistema do Aluguel Legal."
+				+ "<p>Usuario:"+ usuario +" </p>"
+				+ "<p>Acesse o link para efetuar login:<a href="+ linkLogin +">Clique aqui</a></p>"
+				+ "</body></html>";
+		enviarEmail(destinatario, tituloEmail, textoEmail);
+	}
 }
