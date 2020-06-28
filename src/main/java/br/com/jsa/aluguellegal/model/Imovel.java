@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 @Entity(name = "imovel")
 @JsonIdentityInfo(scope = Imovel.class, generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
-@JsonDeserialize(builder = BeanBuilder.class)
+//@JsonDeserialize(builder = BeanBuilder.class)
 public class Imovel implements Serializable {
 
 	private static final long serialVersionUID = 845961843393627309L;

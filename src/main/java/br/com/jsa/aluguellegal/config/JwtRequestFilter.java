@@ -40,7 +40,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		System.out.println("Method       : "+ request.getMethod());
 		System.out.println("content type : "+request.getHeader("Content-type"));
 		System.out.println("Authorization: "+request.getHeader("Authorization"));
-        System.out.println("=============================   F I M   =============================");
 		String username = null;
 		String jwtToken = null;
 		
@@ -55,6 +54,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 				httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			} catch (ExpiredJwtException e) {
 				System.out.println("JWT Token has expired");
+				httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			}
 		} else {
 			logger.warn("JWT Token does not begin with Bearer String");
@@ -75,6 +75,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			}
 		}
 		System.out.println("STATUS CODE: "+response.getStatus());
+		System.out.println("=============================   F I M   =============================");
 		chain.doFilter(request, response);
 	}
 

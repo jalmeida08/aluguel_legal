@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 @Entity(name = "pessoa")
 @JsonIdentityInfo(scope = Pessoa.class, generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
-@JsonDeserialize(builder = BeanBuilder.class)
+//@JsonDeserialize(builder = BeanBuilder.class)
 public class Pessoa implements Serializable{
 
 	private static final long serialVersionUID = -7267937286295026785L;

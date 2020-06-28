@@ -22,9 +22,9 @@ public class ImovelController {
     @Autowired
     private ImovelService imovelService;
 
-    @PostMapping("/salvar-lista-imovel")
-    public ResponseEntity salvar(@RequestBody List<Imovel> listaImovel){
-        imovelService.salvarListaImoveis(listaImovel);
+    @PostMapping("/salvar-imovel")
+    public ResponseEntity salvar(@RequestBody Imovel imovel){
+        imovelService.salvar(imovel);
         return ResponseEntity.ok().build();
     }
 
